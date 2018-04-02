@@ -48,23 +48,26 @@ namespace ProjectAIC
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*
             using (var db = Db.FromConfig("cn"))
             {
-                employeeBindingSource.DataSource = db.Sql("select * from Employees").AsEnumerable<Employee>();
-                Employee obj = employeeBindingSource.Current as Employee;
-                if (obj != null)
+                int number = db.Sql("select count(*) from Employees").AsScalar<int>();
+                //MetroFramework.MetroMessageBox.Show(this, number.ToString(), "Message");
+                if (number != 0)
                 {
-                    string url = obj.ImageUrl;
-                    if (url != null)
+                    employeeBindingSource.DataSource = db.Sql("select * from Employees").AsEnumerable<Employee>();
+                    Employee obj = employeeBindingSource.Current as Employee;
+                    if (obj != null)
                     {
-                        pic.Image = Image.FromFile(url);
+                        string url = obj.ImageUrl;
+                        if (url != null)
+                        {
+                            pic.Image = Image.FromFile(url);
+                        }
                     }
+                    infoPanel.Enabled = false;
                 }
-                infoPanel.Enabled = false;
             }
             infoPanel.Enabled = true;
-            */
         }
 
         private void addBtn_Click(object sender, EventArgs e)
@@ -79,6 +82,7 @@ namespace ProjectAIC
             int.TryParse(ageText.Text, out num);
             obj.Salary = num;
             obj.ImageUrl = currentFileName;
+            MetroFramework.MetroMessageBox.Show(this, currentFileName);
             employeeBindingSource.Add(obj);
             employeeBindingSource.MoveLast();
             pibText.Focus();
@@ -122,6 +126,7 @@ namespace ProjectAIC
 
         private void metroGrid1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            pic.Image = null;
             Employee obj = employeeBindingSource.Current as Employee;
             if (obj != null)
             {
