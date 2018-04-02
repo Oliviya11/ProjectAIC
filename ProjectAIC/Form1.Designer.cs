@@ -33,6 +33,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.metroGrid1 = new MetroFramework.Controls.MetroGrid();
+            this.employeeIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pIBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.salaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.imageUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.employeeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.infoPanel = new MetroFramework.Controls.MetroPanel();
             this.salaryText = new MetroFramework.Controls.MetroTextBox();
@@ -50,12 +56,6 @@
             this.deleteBtn = new MetroFramework.Controls.MetroButton();
             this.saveBtn = new MetroFramework.Controls.MetroButton();
             this.cancelBtn = new MetroFramework.Controls.MetroButton();
-            this.employeeIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pIBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.salaryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.imageUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.metroGrid1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.employeeBindingSource)).BeginInit();
             this.infoPanel.SuspendLayout();
@@ -114,6 +114,44 @@
             this.metroGrid1.Size = new System.Drawing.Size(306, 288);
             this.metroGrid1.TabIndex = 0;
             this.metroGrid1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.metroGrid1_CellClick);
+            // 
+            // employeeIdDataGridViewTextBoxColumn
+            // 
+            this.employeeIdDataGridViewTextBoxColumn.DataPropertyName = "EmployeeId";
+            this.employeeIdDataGridViewTextBoxColumn.HeaderText = "EmployeeId";
+            this.employeeIdDataGridViewTextBoxColumn.Name = "employeeIdDataGridViewTextBoxColumn";
+            this.employeeIdDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // pIBDataGridViewTextBoxColumn
+            // 
+            this.pIBDataGridViewTextBoxColumn.DataPropertyName = "PIB";
+            this.pIBDataGridViewTextBoxColumn.HeaderText = "PIB";
+            this.pIBDataGridViewTextBoxColumn.Name = "pIBDataGridViewTextBoxColumn";
+            // 
+            // ageDataGridViewTextBoxColumn
+            // 
+            this.ageDataGridViewTextBoxColumn.DataPropertyName = "Age";
+            this.ageDataGridViewTextBoxColumn.HeaderText = "Age";
+            this.ageDataGridViewTextBoxColumn.Name = "ageDataGridViewTextBoxColumn";
+            // 
+            // positionDataGridViewTextBoxColumn
+            // 
+            this.positionDataGridViewTextBoxColumn.DataPropertyName = "Position";
+            this.positionDataGridViewTextBoxColumn.HeaderText = "Position";
+            this.positionDataGridViewTextBoxColumn.Name = "positionDataGridViewTextBoxColumn";
+            // 
+            // salaryDataGridViewTextBoxColumn
+            // 
+            this.salaryDataGridViewTextBoxColumn.DataPropertyName = "Salary";
+            this.salaryDataGridViewTextBoxColumn.HeaderText = "Salary";
+            this.salaryDataGridViewTextBoxColumn.Name = "salaryDataGridViewTextBoxColumn";
+            // 
+            // imageUrlDataGridViewTextBoxColumn
+            // 
+            this.imageUrlDataGridViewTextBoxColumn.DataPropertyName = "ImageUrl";
+            this.imageUrlDataGridViewTextBoxColumn.HeaderText = "ImageUrl";
+            this.imageUrlDataGridViewTextBoxColumn.Name = "imageUrlDataGridViewTextBoxColumn";
+            this.imageUrlDataGridViewTextBoxColumn.Visible = false;
             // 
             // employeeBindingSource
             // 
@@ -344,6 +382,7 @@
             this.deleteBtn.TabIndex = 4;
             this.deleteBtn.Text = "Delete";
             this.deleteBtn.UseSelectable = true;
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // saveBtn
             // 
@@ -363,44 +402,6 @@
             this.cancelBtn.TabIndex = 6;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseSelectable = true;
-            // 
-            // employeeIdDataGridViewTextBoxColumn
-            // 
-            this.employeeIdDataGridViewTextBoxColumn.DataPropertyName = "EmployeeId";
-            this.employeeIdDataGridViewTextBoxColumn.HeaderText = "EmployeeId";
-            this.employeeIdDataGridViewTextBoxColumn.Name = "employeeIdDataGridViewTextBoxColumn";
-            this.employeeIdDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // pIBDataGridViewTextBoxColumn
-            // 
-            this.pIBDataGridViewTextBoxColumn.DataPropertyName = "PIB";
-            this.pIBDataGridViewTextBoxColumn.HeaderText = "PIB";
-            this.pIBDataGridViewTextBoxColumn.Name = "pIBDataGridViewTextBoxColumn";
-            // 
-            // ageDataGridViewTextBoxColumn
-            // 
-            this.ageDataGridViewTextBoxColumn.DataPropertyName = "Age";
-            this.ageDataGridViewTextBoxColumn.HeaderText = "Age";
-            this.ageDataGridViewTextBoxColumn.Name = "ageDataGridViewTextBoxColumn";
-            // 
-            // positionDataGridViewTextBoxColumn
-            // 
-            this.positionDataGridViewTextBoxColumn.DataPropertyName = "Position";
-            this.positionDataGridViewTextBoxColumn.HeaderText = "Position";
-            this.positionDataGridViewTextBoxColumn.Name = "positionDataGridViewTextBoxColumn";
-            // 
-            // salaryDataGridViewTextBoxColumn
-            // 
-            this.salaryDataGridViewTextBoxColumn.DataPropertyName = "Salary";
-            this.salaryDataGridViewTextBoxColumn.HeaderText = "Salary";
-            this.salaryDataGridViewTextBoxColumn.Name = "salaryDataGridViewTextBoxColumn";
-            // 
-            // imageUrlDataGridViewTextBoxColumn
-            // 
-            this.imageUrlDataGridViewTextBoxColumn.DataPropertyName = "ImageUrl";
-            this.imageUrlDataGridViewTextBoxColumn.HeaderText = "ImageUrl";
-            this.imageUrlDataGridViewTextBoxColumn.Name = "imageUrlDataGridViewTextBoxColumn";
-            this.imageUrlDataGridViewTextBoxColumn.Visible = false;
             // 
             // Form1
             // 

@@ -82,7 +82,7 @@ namespace ProjectAIC
             int.TryParse(ageText.Text, out num);
             obj.Salary = num;
             obj.ImageUrl = currentFileName;
-            MetroFramework.MetroMessageBox.Show(this, currentFileName);
+            MetroFramework.MetroMessageBox.Show(this, currentFileName, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             employeeBindingSource.Add(obj);
             employeeBindingSource.MoveLast();
             pibText.Focus();
@@ -95,7 +95,7 @@ namespace ProjectAIC
 
         private void editBtn_Click(object sender, EventArgs e)
         {
-            
+            objState = EntityState.Changed;
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -109,10 +109,11 @@ namespace ProjectAIC
                     if (objState == EntityState.Added)
                     {
                         obj.EmployeeId = db.Sql("insert into Employees(PIB, Age, Position, Salary, ImageUrl) values(@PIB, @Age, @Position, @Salary, @ImageUrl);select SCOPE_IDENTITY()").WithParameters(new { PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl }).AsScalar<int>();
+                        MetroFramework.MetroMessageBox.Show(this, "Employee was successfully added!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (objState == EntityState.Changed)
                     {
-                     //   db.StoredProcedure("sp_Employees_Update").WithParameters(new { EmployeeId = obj.EmployeeId, PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl }).AsNonQuery();
+                       db.Sql("update Employees set PIB=@PIB, Age=@Age, Position=@Position, Salary=@Salary, Position=@Position where EmployeeId = @EmployeeId").WithParameters(new { EmployeeId = obj.EmployeeId, PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl }).AsScalar<int>();
                     }
                     
                 }
@@ -134,6 +135,34 @@ namespace ProjectAIC
                 {
                     pic.Image = Image.FromFile(obj.ImageUrl);
                 }
+            }
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MetroFramework.MetroMessageBox.Show(this, "Are you shure you want to delete this record?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Employee obj = employeeBindingSource.Current as Employee;
+                    if (obj != null)
+                    {
+                        using(var db = Db.FromConfig("cn"))
+                        {
+                            db.Sql("delete from Employees where EmployeeId = @EmployeeId").WithParameters(new { EmployeeId = obj.EmployeeId }).AsNonQuery();
+                            employeeBindingSource.RemoveCurrent();
+                            metroGrid1.Enabled = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MetroFramework.MetroMessageBox.Show(this, ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                metroGrid1.Enabled = true;
             }
         }
     }
