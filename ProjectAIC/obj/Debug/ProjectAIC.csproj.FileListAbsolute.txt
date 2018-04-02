@@ -1,0 +1,14 @@
+D:\ProjectAIC\ProjectAIC\bin\Debug\ProjectAIC.exe.config
+D:\ProjectAIC\ProjectAIC\bin\Debug\ProjectAIC.exe
+D:\ProjectAIC\ProjectAIC\bin\Debug\ProjectAIC.pdb
+D:\ProjectAIC\ProjectAIC\bin\Debug\MetroFramework.Design.dll
+D:\ProjectAIC\ProjectAIC\bin\Debug\MetroFramework.dll
+D:\ProjectAIC\ProjectAIC\bin\Debug\MetroFramework.Fonts.dll
+D:\ProjectAIC\ProjectAIC\bin\Debug\Net.Code.ADONet.dll
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.Form1.resources
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.Properties.Resources.resources
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.csproj.GenerateResource.Cache
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.csproj.CoreCompileInputs.cache
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.exe
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.pdb
+D:\ProjectAIC\ProjectAIC\obj\Debug\ProjectAIC.csprojResolveAssemblyReference.cache
