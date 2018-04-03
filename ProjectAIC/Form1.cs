@@ -29,9 +29,9 @@ namespace ProjectAIC
                 {
                     pic.Image = Image.FromFile(ofd.FileName);
                     Employee obj = employeeBindingSource.Current as Employee;
+                    currentFileName = ofd.FileName;
                     if (obj != null)
                     {
-                        currentFileName = ofd.FileName;
                         obj.ImageUrl = currentFileName;
                     }
                 }
@@ -43,6 +43,8 @@ namespace ProjectAIC
             pibText.Text = null;
             ageText.Text = null;
             positionText.Text = null;
+            salaryText.Text = null;
+            idText.Text = null;
             pic.Image = null;
         }
 
@@ -51,19 +53,11 @@ namespace ProjectAIC
             using (var db = Db.FromConfig("cn"))
             {
                 int number = db.Sql("select count(*) from Employees").AsScalar<int>();
-                //MetroFramework.MetroMessageBox.Show(this, number.ToString(), "Message");
                 if (number != 0)
                 {
                     employeeBindingSource.DataSource = db.Sql("select * from Employees").AsEnumerable<Employee>();
                     Employee obj = employeeBindingSource.Current as Employee;
-                    if (obj != null)
-                    {
-                        string url = obj.ImageUrl;
-                        if (url != null)
-                        {
-                            pic.Image = Image.FromFile(url);
-                        }
-                    }
+                    initEmployeeFromRow(ref obj);
                     infoPanel.Enabled = false;
                 }
             }
@@ -74,28 +68,40 @@ namespace ProjectAIC
         {
             objState = EntityState.Added;
             Employee obj = new Employee();
-            obj.PIB = pibText.Text;
-            int num = 0;
-            int.TryParse(ageText.Text, out num);
-            obj.Age = num;
-            obj.Position = positionText.Text;
-            int.TryParse(ageText.Text, out num);
-            obj.Salary = num;
-            obj.ImageUrl = currentFileName;
-            MetroFramework.MetroMessageBox.Show(this, currentFileName, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            initEmployeeFromInput(ref obj);
             employeeBindingSource.Add(obj);
             employeeBindingSource.MoveLast();
             pibText.Focus();
         }
 
+        private void initEmployeeFromInput(ref Employee obj)
+        {
+            obj.PIB = pibText.Text;
+            int num = 0;
+            int.TryParse(ageText.Text, out num);
+            obj.Age = num;
+            int.TryParse(idText.Text, out num);
+            obj.EmployeeId = num;
+            obj.Position = positionText.Text;
+            int.TryParse(salaryText.Text, out num);
+            obj.Salary = num;
+        }
+
         private void employeeBindingSource_CurrentChanged(object sender, EventArgs e)
         {
-
+            pic.Image = null;
+            Employee obj = employeeBindingSource.Current as Employee;
+            initEmployeeFromRow(ref obj);
         }
 
         private void editBtn_Click(object sender, EventArgs e)
         {
             objState = EntityState.Changed;
+            Employee obj = employeeBindingSource.Current as Employee;
+            if (obj != null)
+            {
+                initEmployeeFromInput(ref obj);
+            }
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -106,14 +112,17 @@ namespace ProjectAIC
                 Employee obj = employeeBindingSource.Current as Employee;
                 using (var db = Db.FromConfig("cn"))
                 {
+                    initImage(ref obj);
                     if (objState == EntityState.Added)
                     {
                         obj.EmployeeId = db.Sql("insert into Employees(PIB, Age, Position, Salary, ImageUrl) values(@PIB, @Age, @Position, @Salary, @ImageUrl);select SCOPE_IDENTITY()").WithParameters(new { PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl }).AsScalar<int>();
-                        MetroFramework.MetroMessageBox.Show(this, "Employee was successfully added!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MetroFramework.MetroMessageBox.Show(this, "Employee "+obj.EmployeeId+" was successfully added!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (objState == EntityState.Changed)
                     {
-                       db.Sql("update Employees set PIB=@PIB, Age=@Age, Position=@Position, Salary=@Salary, Position=@Position where EmployeeId = @EmployeeId").WithParameters(new { EmployeeId = obj.EmployeeId, PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl }).AsScalar<int>();
+                        db.Sql("update Employees set PIB=@PIB, Age=@Age, Position=@Position, Salary=@Salary, ImageUrl=@ImageUrl where EmployeeId = @EmployeeId").WithParameters(new { PIB = obj.PIB, Age = obj.Age, Position = obj.Position, Salary = obj.Salary, ImageUrl = obj.ImageUrl, EmployeeId = obj.ImageUrl }).AsNonQuery();
+                        initEmployeeFromInput(ref obj);
+                        MetroFramework.MetroMessageBox.Show(this, "Employee was successfully edited!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     
                 }
@@ -125,12 +134,45 @@ namespace ProjectAIC
             }
         }
 
+        private void initImage(ref Employee obj)
+        {
+            string imgUrl = obj.ImageUrl;
+            if (string.IsNullOrEmpty(imgUrl))
+            {
+                imgUrl = currentFileName;
+                obj.ImageUrl = imgUrl;
+            }
+        }
+
         private void metroGrid1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             pic.Image = null;
             Employee obj = employeeBindingSource.Current as Employee;
+            initEmployeeFromRow(ref obj);
+        }
+
+        private void initEmployeeFromRow(ref Employee obj)
+        {
             if (obj != null)
             {
+                idText.Text = obj.EmployeeId.ToString();
+                if (!string.IsNullOrEmpty(obj.PIB))
+                {
+                    pibText.Text = obj.PIB;
+                }
+                if (obj.Age != 0)
+                {
+                    ageText.Text = obj.Age.ToString();
+                }
+                if (!string.IsNullOrEmpty(obj.Position))
+                {
+                    positionText.Text = obj.Position;
+                }
+                if (obj.Salary != 0)
+                {
+                    salaryText.Text = obj.Salary.ToString();
+                }
+                initImage(ref obj);
                 if (!string.IsNullOrEmpty(obj.ImageUrl))
                 {
                     pic.Image = Image.FromFile(obj.ImageUrl);
@@ -151,6 +193,7 @@ namespace ProjectAIC
                         {
                             db.Sql("delete from Employees where EmployeeId = @EmployeeId").WithParameters(new { EmployeeId = obj.EmployeeId }).AsNonQuery();
                             employeeBindingSource.RemoveCurrent();
+                            clearInput();
                             metroGrid1.Enabled = false;
                         }
                     }
@@ -164,6 +207,11 @@ namespace ProjectAIC
             {
                 metroGrid1.Enabled = true;
             }
+        }
+
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            clearInput();
         }
     }
 }
